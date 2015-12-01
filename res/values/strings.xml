@@ -1,5 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">DomesticaApp</string>
+    <string name="title_activity_empregador">Empregador</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="stvCodigo">Codigo</string>
+    <string name="stvNome">Nome</string>
+    <string name="stvEndereco">Endereço</string>
+    <string name="sbtConsultar">Consultar</string>
+    <string name="sbtSalvar">Salvar</string>
 
 </resources>
