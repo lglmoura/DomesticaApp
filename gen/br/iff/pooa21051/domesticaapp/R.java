@@ -15,6 +15,7 @@ public final class R {
     }
     public static final class id {
         public static final int btConsutar=0x7f06000b;
+        public static final int btLimpar=0x7f06000d;
         public static final int btSalvar=0x7f06000c;
         public static final int etCodigo=0x7f060003;
         public static final int etEndereco=0x7f060009;
@@ -35,6 +36,7 @@ public final class R {
         public static final int app_name=0x7f040000;
         public static final int hello_world=0x7f040002;
         public static final int sbtConsultar=0x7f040006;
+        public static final int sbtLimpar=0x7f040008;
         public static final int sbtSalvar=0x7f040007;
         public static final int stvCodigo=0x7f040003;
         public static final int stvEndereco=0x7f040005;

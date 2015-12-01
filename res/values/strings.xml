@@ -9,5 +9,6 @@
     <string name="stvEndereco">Endereço</string>
     <string name="sbtConsultar">Consultar</string>
     <string name="sbtSalvar">Salvar</string>
+    <string name="sbtLimpar">Limpar</string>
 
 </resources>

@@ -18,7 +18,7 @@
 
             <TextView
                 android:id="@+id/tvCodigo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stvCodigo" />
 
@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/tvNome"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stvNome" />
 
@@ -56,7 +56,7 @@
 
             <TextView
                 android:id="@+id/tvEndereco"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stvEndereco" />
 
@@ -84,6 +84,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sbtSalvar" />
+            
+            <Button
+                android:id="@+id/btLimpar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sbtLimpar" />
         </LinearLayout>
     </LinearLayout>
 
