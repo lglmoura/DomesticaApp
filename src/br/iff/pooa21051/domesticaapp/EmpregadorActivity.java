@@ -15,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -58,8 +59,8 @@ public class EmpregadorActivity extends Activity {
 				String filtro = etCodigo.getText().toString();
 				if (!filtro.equalsIgnoreCase("")) {
 
-					gettInformationtoAPI(etCodigo.getText().toString()+".json");
-					//new EmpregadorTask().execute("empregadors/" + filtro+ ".json");
+					gettInformationtoAPI();
+					
 
 				}
 			}
@@ -72,8 +73,12 @@ public class EmpregadorActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				if (TextUtils.isEmpty(etCodigo.getText().toString())) 
+				
 				postInformationtoAPI();
-
+				
+				else
+					putInformationtoAPI();
 			}
 
 		});
@@ -93,14 +98,15 @@ public class EmpregadorActivity extends Activity {
 		});
 	}
 
-	private void gettInformationtoAPI(String gParams) {
+	private void gettInformationtoAPI() {
 
 		Log.i("Get====", "GETTING ORDER");
 
 		JSONObject params = new JSONObject();
 
 		EmpregadorTask bgtGet = new EmpregadorTask(
-				"http://192.168.0.52:3000/empregadors/" + gParams, "GET",
+				"http://192.168.0.52:3000/empregadors/" + etCodigo.getText().toString()
+				+ ".json", "GET",
 				params);
 		bgtGet.execute();
 
@@ -128,11 +134,32 @@ public class EmpregadorActivity extends Activity {
 
 	}
 	
+	private void putInformationtoAPI() {
 
-	public class EmpregadorTask extends
-			AsyncTask<String, String, JSONObject> {
+		Log.i("Put====", "PUT ORDER");
 
-		List<NameValuePair> postparams = new ArrayList<NameValuePair>();
+		JSONObject params = new JSONObject();
+
+		try {
+			params.put("nome", etNome.getText().toString());
+			params.put("endereco", etEndereco.getText().toString());
+			params.put("numero", "adadf");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		EmpregadorTask bgtPut = new EmpregadorTask(
+				"http://192.168.0.52:3000/empregadors/"+ etCodigo.getText().toString()
+				+ ".json", "PUT", params);
+		bgtPut.execute();
+
+	}
+
+	public class EmpregadorTask extends AsyncTask<String, String, JSONObject> {
+
+		
 		String URL = null;
 		String method = null;
 
@@ -150,20 +177,19 @@ public class EmpregadorActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(JSONObject empregador) {
-			//if (method.equals("GET")) {
-				if (empregador != null) {
 
-					try {
-						etCodigo.setText(empregador.getString("id"));
-						etNome.setText(empregador.getString("nome"));
-						etEndereco.setText(empregador.getString("endereco"));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+			if (empregador != null) {
 
+				try {
+					etCodigo.setText(empregador.getString("id"));
+					etNome.setText(empregador.getString("nome"));
+					etEndereco.setText(empregador.getString("endereco"));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			//}
+
+			}
 
 			dialog.dismiss();
 		}
@@ -173,13 +199,7 @@ public class EmpregadorActivity extends Activity {
 
 			this.method = method;
 			this.params1 = params1;
-			Log.d("This is in the lisht:", URL);
-			Log.d("This is in the lisht:", method);
-
-			for (int i = 0; i < postparams.size(); i++) {
-				String test = postparams.get(i).toString();
-				Log.d("This is in the lisht:", test);
-			}
+			
 		}
 
 		@Override
@@ -208,6 +228,23 @@ public class EmpregadorActivity extends Activity {
 					HttpEntity httpEntity = httpResponse.getEntity();
 					is = httpEntity.getContent();
 
+				} else if (method.equals("PUT")) {
+					// request method is POST
+					// defaultHttpClient
+
+					DefaultHttpClient httpClient = new DefaultHttpClient();
+					HttpPut httpPut = new HttpPut(URL);
+					httpPut.setEntity(new StringEntity("UTF-8"));
+					StringEntity entity = new StringEntity(params1.toString());
+					httpPut.setEntity(entity);
+
+					httpPut.setHeader("Content-Type", "application/json");
+					httpPut.setHeader("Accept", "application/json");
+
+					HttpResponse httpResponse = httpClient.execute(httpPut);
+					HttpEntity httpEntity = httpResponse.getEntity();
+					is = httpEntity.getContent();
+
 				} else if (method == "GET") {
 					// request method is GET
 					DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -228,21 +265,21 @@ public class EmpregadorActivity extends Activity {
 			}
 
 			try {
-		          Log.i("Logging out *is* before beffered reader", is.toString());
-		       BufferedReader reader = new BufferedReader(new InputStreamReader(
-		         is, "utf-8"), 8);
-		       Log.i("Logging out *is* after beffered reader", is.toString());
-		       StringBuilder sb = new StringBuilder();
-		       String line = null;
-		       while ((line = reader.readLine()) != null) {
-		        sb.append(line + "\n");
-		       }
-		       is.close();
-		       json = sb.toString();
-		       //Log.i("json: ",json);
-		      } catch (Exception e) {
-		       Log.e("Buffer Error", "Error converting result " + e.toString());
-		      }
+				Log.i("Logging out *is* before beffered reader", is.toString());
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is, "utf-8"), 8);
+				Log.i("Logging out *is* after beffered reader", is.toString());
+				StringBuilder sb = new StringBuilder();
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					sb.append(line + "\n");
+				}
+				is.close();
+				json = sb.toString();
+				// Log.i("json: ",json);
+			} catch (Exception e) {
+				Log.e("Buffer Error", "Error converting result " + e.toString());
+			}
 			// try parse the string to a JSON object
 			try {
 				jObj = new JSONObject(json);
