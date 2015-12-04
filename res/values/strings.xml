@@ -10,5 +10,6 @@
     <string name="sbtConsultar">Consultar</string>
     <string name="sbtSalvar">Salvar</string>
     <string name="sbtLimpar">Limpar</string>
+    <string name="sbtDeletar">Deletar</string>
 
 </resources>

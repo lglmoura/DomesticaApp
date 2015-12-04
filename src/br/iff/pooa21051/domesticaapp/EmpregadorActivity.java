@@ -13,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -41,6 +42,7 @@ public class EmpregadorActivity extends Activity {
 	private Button btConsultar;
 	private Button btSalvar;
 	private Button btLimpar;
+	private Button btDeletar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,6 @@ public class EmpregadorActivity extends Activity {
 				if (!filtro.equalsIgnoreCase("")) {
 
 					gettInformationtoAPI();
-					
 
 				}
 			}
@@ -73,10 +74,10 @@ public class EmpregadorActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if (TextUtils.isEmpty(etCodigo.getText().toString())) 
-				
-				postInformationtoAPI();
-				
+				if (TextUtils.isEmpty(etCodigo.getText().toString()))
+
+					postInformationtoAPI();
+
 				else
 					putInformationtoAPI();
 			}
@@ -96,8 +97,33 @@ public class EmpregadorActivity extends Activity {
 
 			}
 		});
+		
+		btDeletar = (Button) findViewById(R.id.btDeletar);
+		btDeletar.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+				deletarInformationtoAPI();
+
+			}
+		});
 	}
 
+	private void deletarInformationtoAPI(){
+		
+		Log.i("Deletar====", "Deletar ORDER");
+
+		JSONObject params = new JSONObject();
+
+		EmpregadorTask bgtDel = new EmpregadorTask(
+				"http://192.168.0.52:3000/empregadors/"
+						+ etCodigo.getText().toString() + ".json", "DELETAR",
+				params);
+		bgtDel.execute();
+		
+	}
 	private void gettInformationtoAPI() {
 
 		Log.i("Get====", "GETTING ORDER");
@@ -105,8 +131,8 @@ public class EmpregadorActivity extends Activity {
 		JSONObject params = new JSONObject();
 
 		EmpregadorTask bgtGet = new EmpregadorTask(
-				"http://192.168.0.52:3000/empregadors/" + etCodigo.getText().toString()
-				+ ".json", "GET",
+				"http://192.168.0.52:3000/empregadors/"
+						+ etCodigo.getText().toString() + ".json", "GET",
 				params);
 		bgtGet.execute();
 
@@ -133,7 +159,7 @@ public class EmpregadorActivity extends Activity {
 		bgtPost.execute();
 
 	}
-	
+
 	private void putInformationtoAPI() {
 
 		Log.i("Put====", "PUT ORDER");
@@ -151,15 +177,15 @@ public class EmpregadorActivity extends Activity {
 		}
 
 		EmpregadorTask bgtPut = new EmpregadorTask(
-				"http://192.168.0.52:3000/empregadors/"+ etCodigo.getText().toString()
-				+ ".json", "PUT", params);
+				"http://192.168.0.52:3000/empregadors/"
+						+ etCodigo.getText().toString() + ".json", "PUT",
+				params);
 		bgtPut.execute();
 
 	}
 
 	public class EmpregadorTask extends AsyncTask<String, String, JSONObject> {
 
-		
 		String URL = null;
 		String method = null;
 
@@ -199,7 +225,7 @@ public class EmpregadorActivity extends Activity {
 
 			this.method = method;
 			this.params1 = params1;
-			
+
 		}
 
 		@Override
@@ -227,6 +253,20 @@ public class EmpregadorActivity extends Activity {
 					HttpResponse httpResponse = httpClient.execute(httpPost);
 					HttpEntity httpEntity = httpResponse.getEntity();
 					is = httpEntity.getContent();
+
+				} else if (method.equals("DELETAR")) {
+					// request method is POST
+					// defaultHttpClient
+
+					DefaultHttpClient httpClient = new DefaultHttpClient();
+					HttpDelete httpDel = new HttpDelete(URL);
+										
+					httpDel.setHeader("Content-Type", "application/json");
+					httpDel.setHeader("Accept", "application/json");
+
+					HttpResponse httpResponse = httpClient.execute(httpDel);
+					HttpEntity httpEntity = httpResponse.getEntity();
+					//is = httpEntity.getContent();
 
 				} else if (method.equals("PUT")) {
 					// request method is POST

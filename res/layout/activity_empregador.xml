@@ -90,6 +90,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sbtLimpar" />
+            
+            <Button
+                android:id="@+id/btDeletar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sbtDeletar" />
         </LinearLayout>
     </LinearLayout>
 
