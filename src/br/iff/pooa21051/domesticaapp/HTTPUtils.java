@@ -14,21 +14,19 @@ import java.util.Scanner;
  * 
  */
 public class HTTPUtils {
-	
-	
 
 	public static String acessar(String modelo) {
 		// try {
 		String conteudo = null;
-		//String urlIFF = "http://192.168.0.52:3000/";
-		String urlIFF = "http://10.12.255.18:3000/";
+		String urlIFF = "http://192.168.0.52:3000/";
+		//String urlIFF = "http://10.12.255.18:3000/";
 		String url1 = urlIFF + modelo;
-		
-		
-		 HttpURLConnection urlConnection = null; ;
+
+		HttpURLConnection urlConnection = null;
+		;
 
 		try {
-			
+
 			URL url = new URL(url1);
 			urlConnection = (HttpURLConnection) url.openConnection();
 			InputStream is = new BufferedInputStream(
@@ -36,17 +34,15 @@ public class HTTPUtils {
 			Scanner scanner = new Scanner(is);
 			conteudo = scanner.useDelimiter("\\A").next();
 			scanner.close();
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return conteudo;
-		}
-		finally {
+		} finally {
 			urlConnection.disconnect();
 		}
-		
+
 		return conteudo;
-        
-		
+
 	}
 }
