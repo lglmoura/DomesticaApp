@@ -13,4 +13,5 @@
 *.sassc
 /config/config.yml
 *.class
+*.log
 
